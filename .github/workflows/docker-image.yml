@@ -17,12 +17,12 @@ jobs:
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: nicklucche
+          username: OMS1996
           password: ${{ secrets.DOCKERHUB_PASS }}
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: nicklucche/stable-diffusion:latest
+          tags: OMS1996/stable-diffusion:latest
 
