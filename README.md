@@ -19,12 +19,12 @@ First of all, make sure to have docker and nvidia-docker installed in your machi
 
 **Windows users**: [install WSL/Ubuntu](https://stackoverflow.com/a/56783810) from store->install [docker](https://docs.docker.com/desktop/windows/wsl/) and start it->update Windows 10 to version 21H2 (Windows 11 should be ok as is)->test out [GPU-support](https://docs.nvidia.com/cuda/wsl-user-guide/index.html#cuda-support-for-wsl2) (a simple `nvidia-smi` in WSL should do). If `nvidia-smi` does not work from WSL, make sure you have updated your nvidia drivers from the official app. 
 
-The easiest way to try out the model is to simply use the pre-built image at `OMS1996/stable-diffusion`.   
+The easiest way to try out the model is to simply use the pre-built image at `nicklucche/stable-diffusion`.   
 Note that you will need a huggingface token, you can get yours at https://huggingface.co/settings/tokens after registering for free on their website.
 
 My advice is that you start the container with:
 
-`docker run --name stable-diffusion --gpus all -it -e TOKEN=<YOUR_TOKEN> -p 7860:7860 OMS1996/stable-diffusion` 
+`docker run --name stable-diffusion --gpus all -it -e TOKEN=<YOUR_TOKEN> -p 7860:7860 nicklucche/stable-diffusion` 
 
 the *first time* you run it, as it will download the model weights (can take a few minutes to do so) and store them on disk (as long as you don't delete the container).
 Then you can simply do `docker stop stable-diffusion` to stop the container and `docker start stable-diffusion` to bring it back up whenever you need.
@@ -56,7 +56,7 @@ I should also mention that adding the nsfw filter (by checking corresponding box
 
 ### Model Parallel
 
-It works by splitting the model into a fixed number of parts, assigning each part to a device and then handling data transfer from one device to the other (more technical details [here](https://github.com/OMS1996/stable-diffusion-nvidia-docker/issues/8) or from source).
+It works by splitting the model into a fixed number of parts, assigning each part to a device and then handling data transfer from one device to the other (more technical details [here](https://github.com/NickLucche/stable-diffusion-nvidia-docker/issues/8) or from source).
 This was originally intended to support setups that had GPUs with small amounts of VRAM that could only run the model by combining their resources, but now it also supports splitting multiple models to accomodate for bigger GPUs, effectively combining Model and Data Parallel. 
 
 Single image inference speed may be slower in this modality (since we may need to move data from one device to the other), but it allows to fill your memory more efficiently if you have big GPUs by creating multiple models.

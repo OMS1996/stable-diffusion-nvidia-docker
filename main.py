@@ -10,6 +10,8 @@ from utils import ModelParts2GPUsAssigner, get_gpu_setting, dummy_checker, remov
 from parallel import StableDiffusionModelParallel, StableDiffusionMultiProcessing
 from schedulers import schedulers
 
+# to avoid running out of memory
+torch.cuda.empty_cache()
 
 TOKEN = os.environ.get("TOKEN", None)
 fp16 = bool(int(os.environ.get("FP16", 1)))
